@@ -1,5 +1,5 @@
 import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
-import { PointCloudOctree, Potree } from '../src';
+import { PointCloudOctree, Potree, PickPoint } from '../src';
 
 // tslint:disable-next-line:no-duplicate-imports
 import * as THREE from 'three';
@@ -42,6 +42,9 @@ export class Viewer {
    * requestAnimationFrame handle we can use to cancel the viewer loop.
    */
   private reqAnimationFrameHandle: number | undefined;
+
+  // Raycaster for picker
+  private raycaster: THREE.Raycaster = new THREE.Raycaster();
 
   /**
    * Initializes the viewer into the specified element.
@@ -160,7 +163,7 @@ export class Viewer {
   /**
    * Triggered anytime the window gets resized.
    */
-  resize = () => {
+  resize(): void {
     if (!this.targetEl) {
       return;
     }
@@ -170,4 +173,12 @@ export class Viewer {
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
   };
+
+  // GPU picking
+  pick(mouse: THREE.Vector2): PickPoint | null {
+    this.raycaster.setFromCamera(mouse, this.camera);
+    let ray = this.raycaster.ray;
+
+    return Potree.pick(this.pointClouds, this.renderer, this.camera, ray);
+  }
 }
