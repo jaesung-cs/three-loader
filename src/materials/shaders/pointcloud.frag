@@ -54,11 +54,14 @@ void main() {
 	float depth = gl_FragCoord.z;
 
 	#if defined(circle_point_shape) || defined(paraboloid_point_shape) || defined (weighted_splats)
+	  // gl_PointCoord ranges from 0.0 to 1.0
+		// x from left to right
+		// y from top to bottom
 		float u = 2.0 * gl_PointCoord.x - 1.0;
 		float v = 2.0 * gl_PointCoord.y - 1.0;
 	#endif
 	
-	#if defined(circle_point_shape) || defined (weighted_splats)
+	#if defined(circle_point_shape) || defined(paraboloid_point_shape) || defined (weighted_splats)
 		float cc = u*u + v*v;
 		if(cc > 1.0){
 			discard;
