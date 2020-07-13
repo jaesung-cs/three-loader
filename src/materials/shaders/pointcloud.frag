@@ -65,6 +65,8 @@ void main() {
 		}
 	#endif
 	
+	// Disable fragment depth test
+	/*
 	#if defined weighted_splats
 		vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
 		float sDepth = texture2D(depthMap, uv).r;
@@ -72,6 +74,7 @@ void main() {
 			discard;
 		}
 	#endif
+	*/
 		
 	#if defined color_type_point_index
 		gl_FragColor = vec4(color, pcIndex / 255.0);
@@ -206,13 +209,19 @@ void main() {
 	#if defined weighted_splats
 	    //float w = pow(1.0 - (u*u + v*v), blendHardness);
 		
+		/*
 		float wx = 2.0 * length(2.0 * gl_PointCoord - 1.0);
 		float w = exp(-wx * wx * 0.5);
+		*/
 		
+		float wx = 2.0 * length(2.0 * gl_PointCoord - 1.0);
+		float w = exp(-wx * wx * 1.);
+
 		//float distance = length(2.0 * gl_PointCoord - 1.0);
 		//float w = exp( -(distance * distance) / blendHardness);
 		
-		gl_FragColor.rgb = gl_FragColor.rgb * w;
+		//gl_FragColor.rgb = gl_FragColor.rgb * w;
+		//gl_FragColor.a = 1.;
 		gl_FragColor.a = w;
 	#endif
 	

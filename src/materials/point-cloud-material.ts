@@ -1,5 +1,6 @@
 import {
   AdditiveBlending,
+  NormalBlending,
   BufferGeometry,
   Camera,
   Color,
@@ -325,10 +326,12 @@ export class PointCloudMaterial extends RawShaderMaterial {
     }
 
     if (this.weighted) {
-      this.blending = AdditiveBlending;
+      //this.blending = AdditiveBlending;
+      this.blending = NormalBlending;
       this.transparent = true;
-      this.depthTest = true;
+      this.depthTest = false;
       this.depthWrite = false;
+      //this.depthWrite = true;
       this.depthFunc = LessEqualDepth;
     }
 

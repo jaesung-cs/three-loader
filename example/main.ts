@@ -1,5 +1,5 @@
 import { Vector3 } from 'three';
-import { PointCloudOctree } from '../src';
+import { PointCloudOctree, PointShape } from '../src';
 import { Viewer } from './viewer';
 
 require('./main.css');
@@ -43,7 +43,11 @@ loadBtn.addEventListener('click', () => {
     .then(pco => {
       pointCloud = pco;
       pointCloud.rotateX(-Math.PI / 2);
+
+      // Shader control
       pointCloud.material.size = 1.0;
+      pointCloud.material.shape = PointShape.PARABOLOID;
+      pointCloud.material.weighted = true;
 
       const camera = viewer.camera;
       camera.far = 1000;
